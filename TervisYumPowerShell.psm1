@@ -8,6 +8,19 @@ oddjob
 oddjob-mkhomedir
 adcli
 samba-common
+policycoreutils-python
+"@ -split "`r`n" | New-YumPackageInstallDefinition
+},
+[PSCustomObject][Ordered] @{
+    Name = "FreshDeskSFTP"
+    PackageInstallDefinition = @"
+realmd
+sssd
+oddjob
+oddjob-mkhomedir
+adcli
+samba-common
+policycoreutils-python
 "@ -split "`r`n" | New-YumPackageInstallDefinition
 },
 [PSCustomObject][Ordered] @{
@@ -25,6 +38,18 @@ adcli
     PackageInstallDefinition = @"
 "@ -split "`r`n" | New-YumPackageInstallDefinition
     PackageGroupToImport = "Windows Domain Join"
+},
+[PSCustomObject][Ordered] @{
+    Name = "OracleODBEE"
+    PackageInstallDefinition = @"
+krb5-workstation
+realmd
+sssd
+adcli
+oddjob
+oddjob-mkhomedir
+policycoreutils-python
+"@ -split "`r`n" | New-YumPackageInstallDefinition
 }
 
 function Get-TervisYumPackageGroup {

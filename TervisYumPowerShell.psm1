@@ -61,13 +61,11 @@ function Get-TervisYumPackageGroup {
 
 function New-YumPackageInstallDefinition {
     param (
-        [Parameter(Mandatory,ValueFromPipeline)]$Name,
-        $Version
+        [Parameter(Mandatory,ValueFromPipeline)]$Name
     )
     process {
         [PSCustomObject]@{
             Name = $Name
-            Version = $Version
         }
     }
 }
@@ -83,7 +81,7 @@ function New-YUMPackageInstallCommand {
     end {
         $YumArguements = (
             $PackageInstallDefinitions |
-            ForEach-Object { "$($_.Name)-$($_.Version)" }
+            ForEach-Object { "$($_.Name)" }
         ) -join " "
 
         "yes | yum -y install $YumArguements"

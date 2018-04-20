@@ -1,56 +1,5 @@
-﻿$TervisPackageGroups = [PSCustomObject][Ordered] @{
-    Name = "SFTP"
-    PackageInstallDefinition = @"
-puppet
-realmd
-sssd
-oddjob
-oddjob-mkhomedir
-adcli
-samba-common
-policycoreutils-python
-"@ -split "`r`n" | New-YumPackageInstallDefinition
-},
-[PSCustomObject][Ordered] @{
-    Name = "FreshDeskSFTP"
-    PackageInstallDefinition = @"
-realmd
-sssd
-oddjob
-oddjob-mkhomedir
-adcli
-samba-common
-policycoreutils-python
-"@ -split "`r`n" | New-YumPackageInstallDefinition
-},
-[PSCustomObject][Ordered] @{
-    Name = "Windows Domain Join"
-    PackageInstallDefinition = @"
-krb5-workstation
-realmd
-sssd
-samba-common-tools
-adcli
-"@ -split "`r`n" | New-YumPackageInstallDefinition
-},
-[PSCustomObject][Ordered] @{
-    Name = "ZeroTierBridge"
-    PackageInstallDefinition = @"
-"@ -split "`r`n" | New-YumPackageInstallDefinition
-    PackageGroupToImport = "Windows Domain Join"
-},
-[PSCustomObject][Ordered] @{
-    Name = "OracleODBEE"
-    PackageInstallDefinition = @"
-krb5-workstation
-realmd
-sssd
-adcli
-oddjob
-oddjob-mkhomedir
-policycoreutils-python
-"@ -split "`r`n" | New-YumPackageInstallDefinition
-}
+﻿$ModulePath = (Get-Module -ListAvailable TervisYumPowerShell).ModuleBase
+. $ModulePath\YumPackageGroupDefinitions.ps1
 
 function Get-TervisYumPackageGroup {
     param (
@@ -59,6 +8,19 @@ function Get-TervisYumPackageGroup {
     $TervisPackageGroups | where Name -EQ $Name
 }
 
+function Get-TervisYumPackageInstallDefinitionFromPackageGroup{
+    param (
+        [Parameter(Mandatory,ValueFromPipeline)]$Name
+    )
+    process{
+        $PackageGroup = Get-TervisYumPackageGroup -Name $Name
+
+        if ($PackageGroup.PackageGroupToImport) {
+            $PackageGroup.PackageGroupToImport | Get-TervisYumPackageInstallDefinitionFromPackageGroup
+        }
+        $PackageGroup.PackageInstallDefinition
+    }
+}
 function New-YumPackageInstallDefinition {
     param (
         [Parameter(Mandatory,ValueFromPipeline)]$Name
@@ -94,8 +56,9 @@ function Install-YumTervisPackageGroup {
         [Parameter(Mandatory,ParameterSetName="SSHSession")]$SSHSession
     )
     process {
-        $TervisPackageGroup = Get-TervisYumPackageGroup -Name $TervisPackageGroupName
-        $Command = $TervisPackageGroup.PackageInstallDefinition | New-YUMPackageInstallCommand
+        $PackageGroupDefinition = Get-TervisYumPackageInstallDefinitionFromPackageGroup -Name $TervisPackageGroupName
+        $PackageGroupDefinitionsToInstall = $PackageGroupDefinition | Sort-Object -Unique -Property Name
+        $Command = $PackageGroupDefinitionsToInstall | New-YUMPackageInstallCommand
         Invoke-SSHCommand -Command $Command -SSHSession $SSHSession
     }
 }

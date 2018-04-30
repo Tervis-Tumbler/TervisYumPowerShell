@@ -71,6 +71,7 @@ make
     PackageInstallDefinition = @"
 sysstat
 ksh
+SSMTP
 "@ -split "`r`n" | New-YumPackageInstallDefinition
 },
 [PSCustomObject][Ordered] @{

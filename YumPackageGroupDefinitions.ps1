@@ -67,6 +67,7 @@ make
 dos2unix
 nfs-utils
 iscsi-initiator-utils.x86_64
+device-mapper-multipath.x86_64
 unixODBC.i686
 unixODBC.x86_64
 unixODBC-devel.i686

@@ -81,6 +81,8 @@ augeas.x86_64
 sysstat
 ksh
 ssmtp
+lsof
+net-snmp
 "@ -split "`r`n" | New-YumPackageInstallDefinition
 },
 [PSCustomObject][Ordered] @{

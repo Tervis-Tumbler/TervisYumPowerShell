@@ -83,6 +83,8 @@ ksh
 ssmtp
 lsof
 net-snmp
+powershell
+bc
 "@ -split "`r`n" | New-YumPackageInstallDefinition
 },
 [PSCustomObject][Ordered] @{

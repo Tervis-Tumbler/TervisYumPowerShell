@@ -37,7 +37,7 @@ mailx
 PackageGroupToImport = "OraclePackages","Windows Domain Join","OracleCore","NTP"
 },
 [PSCustomObject][Ordered] @{
-    Name = "OraclePackages"
+    Name = "OracleODBEE"
     PackageInstallDefinition = @"
 binutils
 compat-libcap1.i686
@@ -74,6 +74,47 @@ unixODBC-devel.i686
 unixODBC-devel.x86_64
 augeas.x86_64
 "@ -split "`r`n" | New-YumPackageInstallDefinition
+PackageGroupToImport = "Windows Domain Join","OracleCore","NTP"
+},
+[PSCustomObject][Ordered] @{
+    Name = "OracleWeblogic"
+    PackageInstallDefinition = @"
+binutils
+compat-libcap1.i686
+compat-libstdc++-33.i686
+compat-libstdc++-33
+gcc
+gcc-c++
+glibc.i686
+glibc
+glibc-devel.i686
+glibc-devel
+libaio.i686
+libaio
+libaio-devel.i686
+libaio-devel
+libgcc.i686
+libgcc
+libstdc++.i686
+libstdc++
+libstdc++.i686
+libstdc++
+libXi.i686
+libXi
+libXtst.i686
+libXtst
+make
+dos2unix
+nfs-utils
+iscsi-initiator-utils.x86_64
+device-mapper-multipath.x86_64
+unixODBC.i686
+unixODBC.x86_64
+unixODBC-devel.i686
+unixODBC-devel.x86_64
+augeas.x86_64
+"@ -split "`r`n" | New-YumPackageInstallDefinition
+PackageGroupToImport = "Windows Domain Join","OracleCore","NTP"
 },
 [PSCustomObject][Ordered] @{
     Name = "OracleCore"

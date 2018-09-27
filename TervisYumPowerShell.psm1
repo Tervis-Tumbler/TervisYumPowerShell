@@ -32,6 +32,30 @@ function New-YumPackageInstallDefinition {
     }
 }
 
+function Get-TervisYumPackageGroupInstallDefinitionFromPackageGroup{
+    param (
+        [Parameter(Mandatory,ValueFromPipeline)]$Name
+    )
+    process{
+        $PackageGroup = Get-TervisYumPackageGroup -Name $Name
+
+        if ($PackageGroup.PackageGroupToImport) {
+            $PackageGroup.PackageGroupToImport | Get-TervisYumPackageGroupInstallDefinitionFromPackageGroup
+        }
+        $PackageGroup.GroupPackageInstallDefinition
+    }
+}
+function New-YumPackageInstallDefinition {
+    param (
+        [Parameter(Mandatory,ValueFromPipeline)]$Name
+    )
+    process {
+        [PSCustomObject]@{
+            Name = $Name
+        }
+    }
+}
+
 function New-YUMPackageInstallCommand {
     param (
         [Parameter(Mandatory,ValueFromPipeline)]$PackageInstallDefinition
@@ -57,9 +81,13 @@ function Install-YumTervisPackageGroup {
     )
     process {
         $PackageGroupDefinition = Get-TervisYumPackageInstallDefinitionFromPackageGroup -Name $TervisPackageGroupName
+        $GroupPackageGroupDefinition = Get-TervisYumPackageGroupInstallDefinitionFromPackageGroup -Name $TervisPackageGroupName
         $PackageGroupDefinitionsToInstall = $PackageGroupDefinition | Sort-Object -Unique -Property Name
-        $Command = $PackageGroupDefinitionsToInstall | New-YUMPackageInstallCommand
-        Invoke-SSHCommand -Command $Command -SSHSession $SSHSession
+        $GroupPackageGroupDefinitionsToInstall = $GroupPackageGroupDefinition | Sort-Object -Unique -Property Name
+        $PackageGroupInstallCommand = $PackageGroupDefinitionsToInstall | New-YUMPackageInstallCommand
+        $GroupPackageGroupInstallCommand = $GroupPackageGroupDefinitionsToInstall | New-YUMPackageInstallCommand
+        Invoke-SSHCommand -Command $PackageGroupInstallCommand -SSHSession $SSHSession
+        Invoke-SSHCommand -Command $GroupPackageGroupInstallCommand -SSHSession $SSHSession
     }
 }
 

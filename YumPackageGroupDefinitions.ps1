@@ -126,7 +126,12 @@ lsof
 net-snmp
 powershell
 bc
+vnc-server
+xrdp
 "@ -split "`r`n" | New-YumPackageInstallDefinition
+GroupPackageInstallDefinition = @"
+GNOME
+"@
 },
 [PSCustomObject][Ordered] @{
     Name = "NTP"

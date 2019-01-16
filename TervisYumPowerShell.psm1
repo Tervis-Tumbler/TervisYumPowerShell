@@ -86,8 +86,8 @@ function Install-YumTervisPackageGroup {
         $GroupPackageGroupDefinitionsToInstall = $GroupPackageGroupDefinition | Sort-Object -Unique -Property Name
         $PackageGroupInstallCommand = $PackageGroupDefinitionsToInstall | New-YUMPackageInstallCommand
         $GroupPackageGroupInstallCommand = $GroupPackageGroupDefinitionsToInstall | New-YUMPackageInstallCommand
-        Invoke-SSHCommand -Command $PackageGroupInstallCommand -SSHSession $SSHSession
-        Invoke-SSHCommand -Command $GroupPackageGroupInstallCommand -SSHSession $SSHSession
+        Invoke-SSHCommand -Command $PackageGroupInstallCommand -SSHSession $SSHSession -TimeOut 600
+        Invoke-SSHCommand -Command $GroupPackageGroupInstallCommand -SSHSession $SSHSession -TimeOut 600
     }
 }
 

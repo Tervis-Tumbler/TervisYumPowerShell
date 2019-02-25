@@ -76,8 +76,8 @@ function New-YUMPackageInstallCommand {
 
 function Install-YumTervisPackageGroup {
     param (
-        [Parameter(Mandatory)]$TervisPackageGroupName,
-        [Parameter(Mandatory,ParameterSetName="SSHSession")]$SSHSession
+        [Parameter(ValueFromPipelineByPropertyName,Mandatory)]$TervisPackageGroupName,
+        [Parameter(ValueFromPipelineByPropertyName,Mandatory,ParameterSetName="SSHSession")]$SSHSession
     )
     process {
         $PackageGroupDefinition = Get-TervisYumPackageInstallDefinitionFromPackageGroup -Name $TervisPackageGroupName

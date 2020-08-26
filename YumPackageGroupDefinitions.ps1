@@ -32,6 +32,7 @@ policycoreutils-python
 [PSCustomObject][Ordered] @{
     Name = "OracleODBEE"
     PackageInstallDefinition = @"
+oracle-rdbms-server-11gR2-preinstall
 "@ -split "`r`n" | New-YumPackageInstallDefinition
 PackageGroupToImport = "OraclePackages","Windows Domain Join","OracleCore","NTP"
 },
@@ -74,12 +75,15 @@ PackageGroupToImport = "Windows Domain Join","Core","NTP"
 [PSCustomObject][Ordered] @{
     Name = "OracleIAS"
     PackageInstallDefinition = @"
+mutt
+oracle-ebs-server-R12-preinstall
 "@ -split "`r`n" | New-YumPackageInstallDefinition
 PackageGroupToImport = "OraclePackages","Windows Domain Join","OracleCore","NTP"
 },
 [PSCustomObject][Ordered] @{
     Name = "OracleWeblogic"
     PackageInstallDefinition = @"
+oracle-ebs-server-R12-preinstall
 "@ -split "`r`n" | New-YumPackageInstallDefinition
 PackageGroupToImport = "Windows Domain Join","OracleCore","NTP","OraclePackages"
 },
@@ -105,6 +109,18 @@ ntpdate
 ntp
 ntpd
 "@ -split "`r`n" | New-YumPackageInstallDefinition
+},
+[PSCustomObject][Ordered] @{
+    Name = "LinuxNFSBackupServer"
+    PackageInstallDefinition = @"
+    nfs-utils
+"@ -split "`r`n" | New-YumPackageInstallDefinition
+PackageGroupToImport = "Windows Domain Join"
 }
+
+
+
+
+
 
 

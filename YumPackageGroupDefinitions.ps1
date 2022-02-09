@@ -116,6 +116,12 @@ ntpd
     nfs-utils
 "@ -split "`r`n" | New-YumPackageInstallDefinition
 PackageGroupToImport = "Windows Domain Join"
+},
+[PSCustomObject][Ordered] @{
+    Name = "EcoStruxureIT"
+    PackageInstallDefinition = @"
+"@ -split "`r`n" | New-YumPackageInstallDefinition
+PackageGroupToImport = "Windows Domain Join","NTP"
 }
 
 
